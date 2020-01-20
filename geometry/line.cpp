@@ -26,7 +26,7 @@ struct Line {
 //		if (*this / l) return dist(l.p);
 //		return abs((l.p - p) * (pq ^ l.pq)) / (pq ^ l.pq).norm();
 //	}
-	Line rot(Punto r) { return Line(p, p + pq.rot(r)); }
+	Line rot(Punto r) { return Line(p, p + pq.rot(r)); } // 2D
 };
 // Recta bisectriz
 Line bisector(Line a, Line b) {
