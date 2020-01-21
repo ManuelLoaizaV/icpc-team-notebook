@@ -1,6 +1,3 @@
-// Your day breaks, your mind aches
-// You find that all the words of kindness linger on
-// When she no longer needs you
 //#pragma GCC optimize ("Ofast,unroll-loops")
 //#pragma GCC target ("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 #include <bits/stdc++.h>
@@ -15,6 +12,7 @@ using namespace std;
 #define ff first
 #define ss second
 #define all(v) (v).begin(),(v).end()
+#define SZ(v) ((int)v.size())
 
 typedef long long ll;
 typedef long double ld;
@@ -30,9 +28,7 @@ const ld EPS = 10e-9;
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 ll random(ll a, ll b) { return uniform_int_distribution<ll> (a, b) (rng); }
 
-void solve() {
-	
-}
+void solve() {}
 
 int main() {
 	fastio;
