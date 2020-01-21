@@ -59,7 +59,9 @@ const ld EPS = 10e-9;
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 ll random(ll a, ll b) { return uniform_int_distribution<ll> (a, b) (rng); }
 
-void solve() {}
+void solve() {
+	
+}
 
 int main() {
 	fastio;
