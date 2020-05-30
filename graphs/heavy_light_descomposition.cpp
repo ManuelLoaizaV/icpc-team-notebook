@@ -39,8 +39,8 @@ struct HLD {
 		int ans = 0;
 		while (rt[u] != rt[v]) {
 			if (depth[rt[u]] > depth[rt[v]]) swap(u, v);
-			ans = max(ans, st.query(id[rt[u]], id[u], 1, 0, n - 1));
-			u = parent[rt[u]];
+			ans = max(ans, st.query(id[rt[v]], id[v], 1, 0, n - 1));
+			v = parent[rt[v]];
 		}
 		int a = id[u];
 		int b = id[v];
@@ -54,18 +54,7 @@ struct HLD {
 		global_id = 0;
 		make_size(0);
 		DFS(0);
-		vector<int> a(n, 0);
-		for (int u = 0; u < n; u++) {
-			int sz = adj[u].size();
-			for (int i = 0; i < sz; i++) {
-				int v = adj[u][i];
-				int x = u;
-				int y = v;
-				if (depth[x] > depth[y]) swap(x, y);
-				a[id[y]] = cost[u][i];
-			}
-		}
-		a[0] = 0;
+		vector<int> a(n, 0);// modificar dependiendo del problema
 		st.build(a, 1, 0, n - 1);
 	}
 } hld;
