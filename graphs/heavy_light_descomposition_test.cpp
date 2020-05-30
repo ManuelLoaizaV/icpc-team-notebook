@@ -34,7 +34,7 @@ struct SegmentTree {
 	}
 	
 	int query(int l, int r, int id, int tl, int tr) {
-		if (l <= tr and tr <= r) return tree[id];
+		if (l <= tl and tr <= r) return tree[id];
 		int tm = (tl + tr) / 2;
 		if (r <= tm) return query(l, r, 2 * id, tl, tm);
 		if (tm < l) return query(l, r, 2 * id + 1, tm + 1, tr);
@@ -81,8 +81,8 @@ struct HLD {
 		int ans = 0;
 		while (rt[u] != rt[v]) {
 			if (depth[rt[u]] > depth[rt[v]]) swap(u, v);
-			ans = max(ans, st.query(id[rt[u]], id[u], 1, 0, n - 1));
-			u = parent[rt[u]];
+			ans = max(ans, st.query(id[rt[v]], id[v], 1, 0, n - 1));
+			v = parent[rt[v]];
 		}
 		int a = id[u];
 		int b = id[v];
