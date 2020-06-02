@@ -1,54 +1,54 @@
 #include <bits/stdc++.h>
 using namespace std;
-
 const int N = 1e5;
-int tree[4 * N];
 
-void build(int a[], int v, int tl, int tr) {
-	if (tl == tr) {
-		tree[v] = a[tl];
-	} else {
-		int tm = (tl + tr) / 2;
-		build(a, 2 * v, tl, tm);
-		build(a, 2 * v + 1, tm + 1, tr);
-		tree[v] = tree[2 * v] + tree[2 * v + 1];
+struct SegmentTree {
+	int tree[4 * N];	
+	void build(vector<int> &a, int id, int tl, int tr) {
+		if (tl == tr) {
+			tree[id] = a[tl];
+		} else {
+			int tm = (tl + tr) / 2;
+			build(a, 2 * id, tl, tm);
+			build(a, 2 * id + 1, tm + 1, tr);
+			tree[id] = tree[2 * id] + tree[2 * id + 1];
+		}
 	}
-}
-
-int sum(int v, int tl, int tr, int l, int r) {
-	if (l > r) return 0;
-	if (l == tl and r == tr) return tree[v];
-	int tm = (tl + tr) / 2;
-	return sum(2 * v, tl, tm, l, min(r, tm)) + sum(2 * v + 1, tm + 1, tr, max(l, tm + 1), r);
-}
-
-void update(int v, int tl, int tr, int pos, int new_val) {
-	if (tl == tr) {
-		tree[v] = new_val;
-	} else {
-		int tm = (tl + tr) / 2;
-		if (pos <= tm) update(2 * v, tl, tm, pos, new_val);
-		else update(2 * v + 1, tm + 1, tr, pos, new_val);
-		tree[v] = tree[2 * v] + tree[2 * v + 1];
+	void update(int pos, int val, int id, int tl, int tr) {
+		if (tl == tr) {
+			tree[pos] = val;
+		} else {
+			int tm = (tl + tr) / 2;
+			if (pos <= tm) update(pos, val, 2 * id, tl, tm);
+			else update(pos, val, 2 * id + 1, tm + 1, tr);
+			tree[id] = tree[2 * id] + tree[2 * id + 1];
+		}
 	}
-}
+	int query(int l, int r, int id, int tl, int tr) {
+		if (l <= tl and tr <= r) return tree[id];
+		int tm = (tl + tr) / 2;
+		if (r <= tm) return query(l, r, 2 * id, tl, tm);
+		if (tm < l) return query(l, r, 2 * id + 1, tm + 1, tr);
+		return query(l, r, 2 * id, tl, tm) + query(l, r, 2 * id + 1, tm + 1, tr);
+	}
+} st;
 
 int main() {
-	int a[] = {2, 3, 10, -1, 8, 3, 2, 100};
-	int n = sizeof(a) / sizeof(int);
-	// Creo el segment tree sobre el arreglo a[]
-	build(a, 1, 0, n - 1);
+	vector<int> a = {2, 3, 10, -1, 8, 3, 2, 100};
+	int n = a.size();
+	// Creo el segment tree sobre el vector a
+	st.build(a, 1, 0, n - 1);
 	// Hare consultas 
 	for (int i = 0; i < n; i++)
 		for (int j = i; j < n; j++)
-			printf("La suma de los elementos desde la posicion %d hasta la posicion %d es %d.\n", i, j, sum(1, 0, n - 1, i, j));
+			printf("La suma de los elementos desde la posicion %d hasta la posicion %d es %d.\n", i, j, st.query(i, j, 1, 0, n - 1));
 	// Hare ciertas modificaciones a algunos elementos
-	update(1, 0, n - 1, 3, 50);
-	update(1, 0, n - 1, 0, -69);
-	update(1, 0, n - 1, 6, 42);
+	st.update(3, 50, 1, 0, n - 1);
+	st.update(0, -69, 1, 0, n - 1);
+	st.update(6, 42, 1, 0, n - 1);
 	// De nuevo consultare
 	for (int i = 0; i < n; i++)
 		for (int j = i; j < n; j++)
-			printf("La suma de los elementos desde la posicion %d hasta la posicion %d es %d.\n", i, j, sum(1, 0, n - 1, i, j));
+			printf("La suma de los elementos desde la posicion %d hasta la posicion %d es %d.\n", i, j, st.query(i, j, 1, 0, n - 1));
 	return 0;
 }
