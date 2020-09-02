@@ -25,7 +25,7 @@ struct SegmentTree {
     Node* root;
     SegmentTree() { root = new Node(); }
     int combine(int x, int y) { return x + y; }
-    void update(int l, int r, int val, Node *node, int tl, int tr) {
+    void update(int l, int r, int val, Node* node, int tl, int tr) {
         if (r < tl or l > tr) return;
         if (l <= tl and tr <= r) {
             // Aplicar
