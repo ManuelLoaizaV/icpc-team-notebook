@@ -1,5 +1,4 @@
 // Gracias, Rodolfo
-// Gracias, MarcosK
 // Gracias, Graphter
 // Obrigado, Dilson
 //#pragma GCC optimize ("Ofast,unroll-loops")
@@ -47,24 +46,21 @@ typedef long long Long;
 typedef long double Double;
 typedef unsigned long long ULong;
 typedef pair<Long, Long> Pair;
-typedef vector<Long> Vector;
-typedef vector<Pair> PairVector;
 
 const int N = 1e6;
 const Long INF = 1e18;
-const Double EPS = 10e-9;
+const Double EPS = 1e-9;
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 Long random(Long a, Long b) { return uniform_int_distribution<Long> (a, b) (rng); }
 
-void solve() {
-	
+void solve() {	
 }
 
 int main() {
-	fastio;
-	int t = 1;
-	//cin >> t;
-	while (t--) solve();
-	return 0;
+  fastio;
+  int t = 1;
+  //cin >> t;
+  while (t--) solve();
+  return 0;
 }

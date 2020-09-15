@@ -14,21 +14,19 @@ using namespace std;
 #define all(v) (v).begin(),(v).end()
 #define SZ(v) ((int)v.size())
 
-typedef long long ll;
-typedef long double ld;
-typedef unsigned long long ull;
-typedef pair<ll, ll> ii;
-typedef vector<ll> vi;
-typedef vector<ii> vii;
+typedef long long Long;
+typedef long double Double;
+typedef unsigned long long ULong;
+typedef pair<Long, Long> Pair;
 
 const int N = 1e6;
 const ll INF = 1e18;
-const ld EPS = 10e-9;
+const ld EPS = 1e-9;
 
 mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
-ll random(ll a, ll b) { return uniform_int_distribution<ll> (a, b) (rng); }
+Long random(Long a, Long b) { return uniform_int_distribution<Long> (a, b) (rng); }
 
 int main() {
-	fastio;
-	return 0;
+  fastio;
+  return 0;
 }
