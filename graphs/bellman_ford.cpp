@@ -7,7 +7,7 @@ void BellmanFord(int s) {
   for (int i = 0; i < N; i++) d[i] = INF;
   d[s] = 0;
   // Numero de iteraciones que vamos a hacer del algoritmo
-  for (int i = 0; i < n - 1; i++) {
+  for (int i = 0; i < N - 1; i++) {
     for (Edge e : edges) {
       d[e.v] = min(d[e.v], d[e.u] + e.w);
     }
