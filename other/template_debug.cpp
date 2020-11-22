@@ -1,19 +1,10 @@
-// Gracias, Rodolfo
-// Gracias, Graphter
-// Gracias, Osman
 //#pragma GCC optimize ("Ofast,unroll-loops")
 //#pragma GCC target ("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 #include <bits/stdc++.h>
 #include <unistd.h>
-using namespace std;
 #define FAST_IO ios::sync_with_stdio(0);cin.tie(NULL)
-#define For(i,a,b) for (Long i = a; i < b; i++)
-#define roF(i,a,b) for (Long i = a; i >= b; i--)
-#define pb push_back
-#define mp make_pair
-#define ff first
-#define ss second
 #define all(v) (v).begin(),(v).end()
+using namespace std;
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
