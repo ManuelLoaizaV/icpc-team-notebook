@@ -1,22 +1,18 @@
-const int INF = 1e9;
-const int N = 5e2;
-struct Edge { int u, v, w; };
-vector<Edge> edges;
-int d[N];
-void BellmanFord(int s) {
-  for (int i = 0; i < N; i++) d[i] = INF;
+bool BellmanFord(int s, int n) {
+  for (int i = 0; i < n; i++) d[i] = INF;
   d[s] = 0;
-  // Numero de iteraciones que vamos a hacer del algoritmo
-  for (int i = 0; i < N - 1; i++) {
+  bool has_relaxed;
+  for (int i = 0; i < n; i++) {
+    has_relaxed = false;
     for (Edge e : edges) {
-      d[e.v] = min(d[e.v], d[e.u] + e.w);
+      int u = e.u, v = e.v, w = e.w;
+      if (d[u] != INF && d[u] + w < d[v]) {
+        has_relaxed = true;
+        d[v] = d[u] + w;
+        p[v] = u;
+      }
     }
+    if (!has_relaxed) break;
   }
-  // Determinar ciclos negativos
-  for (Edge e : edges) {
-    if (d[e.u] + e.w < d[e.v]) {
-      cout << "Ciclo negativo encontrado." << '\n';
-      return;
-    }
-  }
+  return has_relaxed;
 }
