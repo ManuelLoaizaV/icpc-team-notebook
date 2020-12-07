@@ -6,20 +6,16 @@ void Dijkstra(int s) {
   for (int i = 0; i < N; i++) d[i] = INF;
   d[s] = 0;
   priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
-  q.push({0, s});  // Al nodo s se llega con distancia 0
-  while (q.size()) {
-    int u = q.top().second;
-    int w = q.top().first;
+  q.push({0, s});
+  while (!q.empty()) {
+    pair<int, int> path = q.top();
+    int u = path.second;
     q.pop();
-    // Verificar que este no es el mejor de llegar a u
-    if (d[u] != w) continue;
-    // la arista pertenece al dijkstra tree u w
-    for (pair<int, int> e : adj[u]) {
-      int v = e.first;
-      int nw = w + e.second;
-      // Relajamos sus vecinos
-      if (nw < d[v]) {
-        d[v] = nw;
+    if (d[u] != path.first) continue;
+    for (auto e : adj[u]) {
+      int v = e.first, w = e.second;
+      if (d[u] + w < d[v]) {
+        d[v] = d[u] + w;
         q.push({d[v], v});
       }
     }
