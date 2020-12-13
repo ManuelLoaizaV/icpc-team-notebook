@@ -1,24 +1,54 @@
-const int INF = 1e9;
-const int N = 1e2, M = 1e4;
-int d[N], p[N], u, v, w;
-void FloydWarshall() {
-  for (int i = 0; i < N; i++) d[i] = INF;
-  for (int i = 0; i < N; i++) p[i] = -1;
-  for (int i = 0; i < N; i++) d[i][i] = 0;  // Caso base con uno mismo
-  for (int i = 0; i < M; i++) {
-    cin >> u >> v >> w;  // En este caso es un grafo dirigido, puede no serlo
-    d[u][v] = min(d[u][v], w);  // Caso base sin nodos entre ellos
-    p[u][v] = u;  // El padre de v respecto a u
+const int N = 1e3, INF = 1e9;
+int d[N][N];
+void AddEdge(int u, int v, int w) {
+  if (w < d[u][v]) {
+    d[u][v] = w;
+    p[u][v] = u;
   }
-  for (int k = 0; k < N; k++) {  // Calculado para nodos <= k en dicho momento
-    for (int i = 0; i < N; i++) {
-      for (int j = 0; j < N; j++) {
-        // dp(i, j, k) = min(dp(i, j, k - 1), dp(i, k, k - 1) + dp(k, j, k - 1))
-        // d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
-        if (d[i][k] + d[k][j] < d[i][j]) {
-          d[i][j] = d[i][k] + d[k][j];
-          p[i][j] = p[k][j];
+}
+vector<int> GetPath(int u, int v) {
+  if (d[u][v] == INF) return {};
+  vector<int> path;
+  while (v != -1) {
+    path.push_back(v);
+    v = parent[u][v];
+  }
+  reverse(path.begin(), path.end());
+  return path;
+}
+vector<int> GetNegativeCycle(int u, int v, int n) {
+  for (int i = 0; i < n; i++) v = p[u][v];
+  vector<int> cycle = {v};
+  v = p[u][v];
+  while (v != cycle[0]) {
+    cycle.push_back(v);
+    v = p[u][v];
+  }
+  return cycle;
+}
+void FloydWarshall (int n){
+  for (int u = 0; u < n; u++) {
+    for (int v = 0; v < n; v++) {
+      d[u][v] = INF;
+      p[u][v] = -1;
+    }
+    d[u][u] = 0;
+  }
+  for (int k = 0; k < n; k++) {
+    for (int u = 0; u < n; u++) {
+      for (int v = 0; v < n; v++) {
+        if (d[u][k] == INF || d[k][v] == INF) continue;
+        if (d[u][k] + d[k][v] < d[u][v]) {
+          d[u][v] = max(-INF, d[u][k] + d[k][v]);
+          p[u][v] = p[k][v];
         }
+      }
+    }
+  }
+  for (int u = 0; u < n; u++) {
+    for (int v = 0; v < n; v++) {
+      for (int x = 0; x < n; x++) {
+        if (d[x][x] < 0 && d[u][x] != INF && d[x][v] != INF) d[u][v] = -INF;
       }
     }
   }
