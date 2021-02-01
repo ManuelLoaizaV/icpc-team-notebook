@@ -1,4 +1,15 @@
-const Long INF = 1e18;
+//A. Average Problem
+//https://redprogramacioncompetitiva.com/contests/2021/01/team/problem.php
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+typedef long long Long;
+typedef long double Double;
+
+const Long INF = 1e9;
+
 struct Fraction {
   Long num, den;
   Fraction(void) {}
@@ -62,9 +73,71 @@ Fraction abs(const Fraction& f) {
   if (ans.num < 0) ans.num *= -1;
   return ans;
 }
-Fraction max(const Fraction& a, const Fraction& b) { return (a > b) ? a : b; }
-Fraction min(const Fraction& a, const Fraction& b) { return (a < b) ? a : b; }
+Fraction max(const Fraction& a, const Fraction& b) {
+  return (a > b) ? a : b;
+}
+Fraction min(const Fraction& a, const Fraction& b) {
+  return (a < b) ? a : b;
+}
 ostream& operator << (ostream& s, const Fraction& f) {
   s << f.num << " / " << f.den;
   return s;
+}
+
+
+void Solve(void) {
+  Long a, s;
+  cin >> a >> s;
+  vector<Long> evaluations(a);
+  Long total = 0;
+  for (int i = 0; i < a; i++) {
+    cin >> evaluations[i];
+    total += evaluations[i];
+  }
+  for (int i = 0; i < s; i++) {
+    Long points = 0;
+    for (int j = 0; j < a; j++) {
+      Long p;
+      cin >> p;
+      points += p * evaluations[j];
+    }
+    Fraction grade(points, total);
+    Long low = grade.GetInteger();
+    low -= (low % 5);
+    Fraction candidates[3];
+    for (int i = 0; i < 3; i++) candidates[i] = Fraction(low + i * 5, 1);
+    Fraction minimum = grade - candidates[0];
+    for (int i = 1; i < 3; i++) {
+      Fraction current = abs(grade - candidates[i]);
+      minimum = min(minimum, current);
+    }
+    Fraction final_grade;
+    for (int i = 0; i < 3; i++) {
+      Fraction current = abs(grade - candidates[i]);
+      if (current == minimum) {
+        final_grade = candidates[i];
+        break;
+      }
+    }
+    cout << final_grade.GetInteger() << " ";
+    if (final_grade < grade) {
+      cout << "DOWN" << '\n';
+    } else if (final_grade > grade) {
+      cout << "UP" << '\n';
+    } else {
+      cout << "SAME" << '\n';
+    }
+  }
+}
+
+int main(void) {
+  ios::sync_with_stdio(0);
+  cin.tie(nullptr);
+  int t;
+  cin >> t;
+  while (t--) {
+    Solve();
+    cout << '\n';
+  }
+  return 0;
 }
