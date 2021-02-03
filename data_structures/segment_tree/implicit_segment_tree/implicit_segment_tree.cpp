@@ -45,12 +45,12 @@ struct SegmentTree {
       node->sum = Merge(node->left->sum, node->right->sum);
     }
   }
-  Long Query(Long l, Long r, Node* node, Lont tl, Long tr) {
+  Long Query(Long l, Long r, Node* node, Long tl, Long tr) {
     if (l <= tl && tr <= r) return node->sum;
     Long tm = (tl + tr) / 2;
     node->Push(tl, tr);
     if (r <= tm) return Query(l, r, node->left, tl, tm);
-    if (tm < l) return Query(l, t, node->right, tm + 1, tr);
+    if (tm < l) return Query(l, r, node->right, tm + 1, tr);
     return Merge(Query(l, r, node->left, tl, tm), Query(l, r, node->right, tm + 1, tr));
   }
 } st;
