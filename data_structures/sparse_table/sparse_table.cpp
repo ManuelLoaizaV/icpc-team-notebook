@@ -11,7 +11,7 @@ struct SparseTable {
       for (int i = 0; i + (1 << j) <= n; i++)
         st[i][j] = f(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
   }
-  /*
+  // O(lg n). Modificar el elemento neutro E dependiendo de la operacion.
   int Query(int l, int r) {
     int ans = E;
     int range = r - l + 1;
@@ -25,6 +25,7 @@ struct SparseTable {
     }
     return ans;
   }
+  // O(lg n). No se necesita definir un elemento neutro para la operacion.
   int Query(int l, int r) {
     int ans = st[l][0];
     if (l == r) return ans;
@@ -39,7 +40,7 @@ struct SparseTable {
     }
     return ans;
   }
-  */
+  // O(1). Solo funciona con operadores idempotentes.
   int Query(int l, int r) {
     int range = r - l + 1;
     int lg = 31 - __builtin_clz(range);
