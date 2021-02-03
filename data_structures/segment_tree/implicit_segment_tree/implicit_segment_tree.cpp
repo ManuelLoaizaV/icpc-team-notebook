@@ -23,12 +23,7 @@ struct Node {
 };
 struct SegmentTree {
   Node* root;
-  Long n;
-  SegmentTree(void) {}
-  SegmentTree(Long m) {
-    root = new Node();
-    n = m;
-  }
+  SegmentTree(void) { root = new Node(); }
   Long Merge(Long x, Long y) { return x + y; }
   void Update(Long l, Long r, Long val, Node* node, Long tl, Long tr) {
     if (r < tl || l > tr) return;
