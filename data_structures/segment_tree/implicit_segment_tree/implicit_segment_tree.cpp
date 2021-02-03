@@ -30,7 +30,7 @@ struct SegmentTree {
     n = m;
   }
   Long Merge(Long x, Long y) { return x + y; }
-  void Update(Long l, Long r, Long val, Node* node, Lont tl, Lont tr) {
+  void Update(Long l, Long r, Long val, Node* node, Long tl, Long tr) {
     if (r < tl || l > tr) return;
     if (l <= tl && tr <= r) {
       // Aplicar
@@ -45,12 +45,12 @@ struct SegmentTree {
       node->sum = Merge(node->left->sum, node->right->sum);
     }
   }
-  Long Query(Long l, Long r, Node* node, Lont tl, Lont tr) {
+  Long Query(Long l, Long r, Node* node, Lont tl, Long tr) {
     if (l <= tl && tr <= r) return node->sum;
     Long tm = (tl + tr) / 2;
     node->Push(tl, tr);
     if (r <= tm) return Query(l, r, node->left, tl, tm);
-    if (tm < l) return QUery(l, t, node->right, tm + 1, tr);
+    if (tm < l) return Query(l, t, node->right, tm + 1, tr);
     return Merge(Query(l, r, node->left, tl, tm), Query(l, r, node->right, tm + 1, tr));
   }
 } st;
