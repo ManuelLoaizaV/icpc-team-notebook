@@ -1,7 +1,7 @@
 const int INF = 1e9;
 const int N = 1e5;
 vector<Pair> adj[N];
-vector<Long> d[N];
+Long d[N];
 void Dijkstra(int s) {
   for (int i = 0; i < N; i++) d[i] = INF;
   d[s] = 0;
