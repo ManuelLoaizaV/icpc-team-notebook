@@ -15,8 +15,8 @@ int Grundy(Position pos) {
   if (pos is terminal) return 0;
   if (is_used[pos]) return dp[pos];
   is_used[pos] = true;
-  vector<Position> moves = possible positions from which I can move;
+  vector<Position> moves = positiona I can move to;
   vector<int> g;
-  for (auto next_pos : moves) g.push_back(grundy(next_pos));
+  for (auto next_pos : moves) g.push_back(Grundy(next_pos));
   return dp[pos] = Mex(g);
 }
