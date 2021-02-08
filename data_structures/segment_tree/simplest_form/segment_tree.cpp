@@ -31,6 +31,6 @@ struct SegmentTree {
     int tm = (tl + tr) / 2;
     if (r <= tm) return Query(l, r, 2 * id, tl, tm);
     if (tm < l) return Query(l, r, 2 * id + 1, tm + 1, tr);
-    return Merge(Query(l, r, 2 * id, tl, tm), Query(l, r, 2 * id + 1, trm + 1, tr));
+    return Merge(Query(l, r, 2 * id, tl, tm), Query(l, r, 2 * id + 1, tm + 1, tr));
   }
 } st;
