@@ -15,7 +15,7 @@ struct SegmentTree {
   }
   void Update(int pos, Long val, int id, int tl, int tr) {
     if (tl == tr) {
-      tree[pos] = Merge(val);
+      tree[id] = Merge(val);
     } else {
       int tm = (tl + tr) / 2;
      if (pos <= tm) {
@@ -23,7 +23,7 @@ struct SegmentTree {
      } else {
        Update(pos, val, 2 * id + 1, tm + 1, tr);
      }
-     tree[pos] = Merge(tree[2 * id], tree[2 * id + 1]);
+     tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
     }
   }
   Long Query(int l, int r, int id, int tl, int tr) {
