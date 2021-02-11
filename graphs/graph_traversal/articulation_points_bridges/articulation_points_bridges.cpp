@@ -1,8 +1,10 @@
 const int N=1e6;
-int gid=1, rch=0;
 bool is_art[N+1];
+int gid=1, rch=0, id[N], lo[N];
+vector<int> adj[N];
 vector<pair<int, int>> bridges;
 void clear(int n){
+  bridges.clear();
   for(int i=0; i<=n; ++i){
     adj[i].clear();
     id[i]=lo[i]=0;
