@@ -1,116 +1,88 @@
-// Gracias, Rodolfo
-// Gracias, MarcosK
-// Gracias, Graphter
-// Obrigado, Dilson
-//#pragma GCC optimize ("Ofast,unroll-loops")
-//#pragma GCC target ("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+//https://codeforces.com/problemset/problem/292/E
 #include <bits/stdc++.h>
-#include <unistd.h>
 using namespace std;
-#define fastio ios::sync_with_stdio(0);cin.tie(0)
-#define For(i,a,b) for (Long i = a; i < b; i++)
-#define roF(i,a,b) for (Long i = a; i >= b; i--)
-#define pb push_back
-#define mp make_pair
-#define ff first
-#define ss second
-#define all(v) (v).begin(),(v).end()
 
-typedef long long Long;
-typedef long double Double;
-typedef unsigned long long ULong;
-typedef pair<Long, Long> Pair;
-typedef vector<Long> Vector;
-typedef vector<Pair> PairVector;
-
-const int N = 2e5;
-const Long INF = 1e18;
-const Double EPS = 10e-9;
-
-mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
-Long random(Long a, Long b) { return uniform_int_distribution<Long> (a, b) (rng); }
+const int N = 1e5;
 
 struct SegmentTree {
-	Long lazy[4 * N];
-	bool marked[4 * N];
-	void build(Long id, Long tl, Long tr) {
-		marked[id] = false;
-		if (tl == tr) {
-			lazy[id] = 0;
-		} else {
-			Long tm = (tl + tr) / 2;
-			build(2 * id, tl, tm);
-			build(2 * id + 1, tm + 1, tr);
-		}
-	}
-	void push(Long id) {
-		if (marked[id]) {
-			lazy[2 * id] = lazy[2 * id + 1] = lazy[id];
-			marked[2 * id] = marked[2 * id + 1] = true;
-			marked[id] = false;
-		}
-	}
-	void update(Long l, Long r, Long val, Long id, Long tl, Long tr) {
-		if (tr < l or tl > r) return;
-		if (l <= tl and tr <= r) {
-			lazy[id] = val;
-			marked[id] = true;
-		} else {
-			Long tm = (tl + tr) / 2;
-			push(id);
-			update(l, r, val, 2 * id, tl, tm);
-			update(l, r, val, 2 * id + 1, tm + 1, tr);
-		}
-	}
-	Long query(Long pos, Long id, Long tl, Long tr) {
-		if (tl == tr) return lazy[id];
-		Long tm = (tl + tr) / 2;
-		push(id);
-		if (pos <= tm) return query(pos, 2 * id, tl, tm);
-		else return query(pos, 2 * id + 1, tm + 1, tr);
-	}
+  bool marked[4 * N];
+  int lazy[4 * N];
+  void Build(int id, int tl, int tr) {
+    marked[id] = false;
+    if (tl == tr) {
+      lazy[id] = a[tl];
+    } else {
+      int tm = (tl + tr) / 2;
+      Build(2 * id, tl, tm);
+      Build(2 * id + 1, tm + 1, tr);
+    }
+  }
+  void Push(int id) {
+    if (marked[id]) {
+      // Asignar
+      lazy[2 * id] = lazy[2 * id + 1] = lazy[id];
+      marked[2 * id] = marked[2 * id + 1] = true;
+      // Reiniciar
+      marked[id] = false;
+    }
+  }
+  void Update(int l, int r, int val, int id, int tl, int tr) {
+    if (tr < l || tl > r) return;
+    if (l <= tl && tr <= r) {
+      // Asignar
+      lazy[id] = val;
+      marked[id] = true;
+    } else {
+      Push(id);
+      int tm = (tl + tr) / 2;
+      Update(l, r, val, 2 * id, tl, tm);
+      Update(l, r, val, 2 * id + 1, tm + 1, tr);
+    }
+  }
+  int Query(int pos, int id, int tl, int tr) {
+    if (tl == tr) return lazy[id];
+    int tm = (tl + tr) / 2;
+    Push(id);
+    if (pos <= tm) return Query(pos, 2 * id, tl, tm);
+    return Query(pos, 2 * id + 1, tm + 1, tr);
+  }
 } st;
 
-void solve() {
-	Long q;
-	cin >> q;
-	Pair queries[q];
-	map<Long, Long> Hantroid;
-	set<Long> Graphter;
-	For(i,0,q) {
-		Long u, v;
-		cin >> u >> v;
-		queries[i].first = u;
-		queries[i].second = v;
-		Graphter.insert(u);
-		if (u > 1) Graphter.insert(u - 1);
-		Graphter.insert(v);
-		if (v > 1) Graphter.insert(v - 1);
-	}
-	Long sz = 0;
-	std::set<Long>::iterator it;
-	for (it = Graphter.begin(); it != Graphter.end(); it++) {
-		Hantroid[(*it)] = sz;
-		sz++;
-	}
-	st.build(1, 0, sz - 1);
-	For(i, 1, q + 1) {
-		Long l = Hantroid[queries[i - 1].first];
-		Long r = Hantroid[queries[i - 1].second];
-		st.update(l, r, i, 1, 0, sz - 1);
-	}
-	set<Long> Hymsly;
-	For(i, 0, sz) {
-		Long Rodolfo = st.query(i, 1, 0, sz - 1);
-		if (Rodolfo > 0) Hymsly.insert(Rodolfo);
-	}
-	cout << Hymsly.size() << endl;
-}
+struct Consulta {
+  int x, y, k;
+};
 
-int main() {
-	fastio;
-	int t = 1;
-	cin >> t;
-	while (t--) solve();
-	return 0;
+int main(void) {
+  ios::sync_with_stdio(0);
+  cin.tie(nullptr);
+  int n, m;
+  cin >> n >> m;
+  vector<int> a(n), b(n);
+  for (int i = 0; i < n; i++) cin >> a[i];
+  for (int i = 0; i < n; i++) cin >> b[i];
+  st.Build(1, 0, n - 1);
+  vector<Consulta> q;
+  while (m--) {
+    int t;
+    cin >> t;
+    if (t == 1) {
+      int x, y, k;
+      cin >> x >> y >> k;
+      x--;
+      y--;
+      st.Update(y, y + k - 1, q.size(), 1, 0, n - 1);
+      q.push_back({x, y, k});
+    } else {
+      int pos;
+      cin >> pos;
+      pos--;
+      int id = st.Query(pos, 1, 0, n - 1);
+      if (id == -1) {
+        cout << b[pos] << '\n';
+      } else {
+        cout << a[q[id].x + (pos - q[id].y)] << '\n';
+      }
+    }
+  }
+  return 0;
 }
