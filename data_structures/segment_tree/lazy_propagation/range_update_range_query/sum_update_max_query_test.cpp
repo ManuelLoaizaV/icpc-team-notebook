@@ -1,9 +1,3 @@
-// Gracias, Rodolfo
-// Gracias, MarcosK
-// Gracias, Graphter
-// Obrigado, Dilson
-//#pragma GCC optimize ("Ofast,unroll-loops")
-//#pragma GCC target ("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 #include <bits/stdc++.h>
 #include <unistd.h>
 using namespace std;
