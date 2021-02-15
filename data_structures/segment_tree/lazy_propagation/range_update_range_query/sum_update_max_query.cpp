@@ -1,6 +1,7 @@
+const int N = 1e5;
 struct SegmentTree {
-  int tree[4 * N], lazy[4 * N];
-  int Merge(const int& x, const int& y) { return max(x, y); }
+  Long tree[4 * N], lazy[4 * N];
+  Long Merge(const Long& x, const Long& y) { return max(x, y); }
   void Build(const vector<int>& a, int id, int tl, int tr) {
     // Reiniciar
     lazy[id] = 0;
@@ -13,7 +14,7 @@ struct SegmentTree {
       tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
     }
   }
-  void Push(int id, int  tl, int tr) {
+  void Push(int id) {
     if (lazy[id] == 0) return;
     // Aplicar
     tree[2 * id] += lazy[id];
@@ -24,7 +25,7 @@ struct SegmentTree {
     // Reiniciar
     lazy[id] = 0;
   }
-  void Update(int l, int r, int delta, int id, int tl, int tr) {
+  void Update(int l, int r, Long delta, int id, int tl, int tr) {
     if (tr < l || tl > r) return;
     if (l <= tl && tr <= r) {
       // Aplicar
@@ -39,7 +40,7 @@ struct SegmentTree {
       tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
     }
   }
-  int Query(int l, int r, int id, int tl, int tr) {
+  Long Query(int l, int r, int id, int tl, int tr) {
     if (l <= tl && tr <= r) return tree[id];
     int tm = (tl + tr) / 2;
     Push(id);
