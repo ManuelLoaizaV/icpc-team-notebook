@@ -1,7 +1,8 @@
-const int INF = 1e9;
+const Long INF = 1e9;
 const int N = 5e3;
-vector<pair<int, int>> adj[N];
-int d[N], p[N];
+vector<Pair> adj[N];
+Long d[N];
+int p[N];
 void DFS(int u) {
   d[u] = -INF;
   for (auto e : adj[u]) if (d[e.first] != -INF) DFS(e.first);
@@ -28,7 +29,8 @@ bool SPFA(int s, int n) {
       break;
     }
     for (auto e : adj[u]) {
-      int v = e.first, w = e.second;
+      int v = e.first;
+      Long w = e.second;
       if (d[u] + w < d[v]) {
         d[v] = d[u] + w;
         p[v] = u;
@@ -43,7 +45,8 @@ bool SPFA(int s, int n) {
   vector<bool> in_cycle(n, false);
   for (int u = 0; u < n; u++) {
     for (auto e : adj[u]) {
-      int v = e.first, w = e.second;
+      int v = e.first;
+      Long w = e.second;
       if (d[u] != INF && d[u] + w < d[v]) in_cycle[v] = true;
     }
   }
