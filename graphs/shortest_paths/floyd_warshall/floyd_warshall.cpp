@@ -1,5 +1,6 @@
-const int N = 1e3, INF = 1e9;
-int d[N][N];
+const int N = 1e3;
+const Long INF = 1e18;
+Long d[N][N];
 void AddEdge(int u, int v, int w) {
   if (w < d[u][v]) {
     d[u][v] = w;
