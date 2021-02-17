@@ -1,4 +1,4 @@
-const int INF = 1e9;
+const Long INF = 1e18;
 const int N = 1e5;
 vector<Pair> adj[N];
 Long d[N];
