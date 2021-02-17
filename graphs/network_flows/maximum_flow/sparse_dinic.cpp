@@ -40,7 +40,7 @@ struct Graph {
     for (int &i = next_edge[u]; i < adj[u].size(); i++) {
       Edge* e = adj[u][i];
       int v = e->to;
-      Long residual_capacity = e->cap - e->flow;
+      Long residual_capacity = e->capacity - e->flow;
       if (residual_capacity == 0 || level[v] != level[u] + 1) continue;
       Long increase = DFS(v, t, min(f, residual_capacity));
       if (increase > 0) {
@@ -60,7 +60,7 @@ struct Graph {
       q.pop_front();
       for (Edge* e : adj[u]) {
         int v = e->to;
-        Long residual_capacity = e->cap - e->flow;
+        Long residual_capacity = e->capacity - e->flow;
         if (level[v] == -1 && residual_capacity > 0) {
           level[v] = level[u] + 1;
           q.push_back(v);
