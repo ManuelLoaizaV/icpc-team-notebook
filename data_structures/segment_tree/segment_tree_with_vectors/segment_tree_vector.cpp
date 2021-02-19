@@ -3,7 +3,7 @@ struct SegmentTree {
   vector<int> tree[4 * N];
   int n;
   SegmentTree(int new_n) { n = new_n; }
-  vector<int> Merge(const vector<int>& left, vector<int>& right) {
+  vector<int> Merge(const vector<int>& left, const vector<int>& right) {
     int l = 0;
     int r = 0;
     vector<int> ans;
@@ -46,6 +46,7 @@ struct SegmentTree {
       tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
     }
   }
+  void Update(int pos, int val) { Update(pos, val, 1, 0, n - 1); }
   // O(lg^2(n))
   int Query(int l, int r, int x, int id, int tl, int tr) {
     if (l <= tl && tr <= r) {
