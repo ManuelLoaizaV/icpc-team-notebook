@@ -1,46 +1,58 @@
-const int N = 1e5, INF = 1e9;
+const int N = 3e4;
 struct SegmentTree {
-    multiset<int> t[4 * N];//O(nlgn)
-    int cur_val[N];
-    int combine(int x, int y) {
-        return min(x, y);
+  int n;
+  multiset<int> tree[4 * N];
+  SegmentTree(void) {}
+  SegmentTree(int new_n) { n = new_n; }
+  int current[N];  // elementos en el estado actual
+  int Merge(const int& x, const int& y) { return min(x, y); }
+  multiset<int> Merge(const multiset<int>& left, const multiset<int>& right) {
+    multiset<int> ans;
+    for (auto x : left) ans.insert(x);
+    for (auto x : right) ans.insert(x);
+    return ans;
+  }
+  // O(n lg^2 n)
+  void Build(const vector<int>& a, int id, int tl, int tr) {
+    if (tl == tr) {
+      tree[id].insert(a[tl]);
+      current[tl] = a[tl];
+    } else {
+      int tm = (tl + tr) / 2;
+      Build(a, 2 * id, tl, tm);
+      Build(a, 2 * id + 1, tm + 1, tr);
+      tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
+      //tree[id] = tree[2 * id];
+      //tree[id].insert(tree[2 * id + 1].begin(), tree[2 * id + 1].end());
     }
-    //O(nlg^2(n))
-    void build(vector<int> &a, int id, int tl, int tr) {
-        if (tl == tr) {
-            t[id].insert(a[tl]);
-            cur_val[tl] = a[tl];
-        } else {
-            int tm = (tl + tr) / 2;
-            build(a, 2 * id, tl, tm);
-            build(a, 2 * id + 1, tm + 1, tr);
-            t[id] = t[2 * id];
-            for (int x : t[2 * id + 1]) t[id].insert(x);
-            //t[id].insert(t[2 * id + 1].begin(), t[2 * id + 1].end());
-        }
+  }
+  // O(lg^2(n))
+  void Update(int pos, int x, int id, int tl, int tr) {
+    tree[id].erase(tree[id].find(current[pos]));
+    tree[id].insert(x);
+    if (tl == tr) {
+      current[pos] = x;
+    } else {
+      int tm = (tl + tr) / 2;
+      if (pos <= tm) {
+        Update(pos, x, 2 * id, tl, tm);
+      } else {
+        Update(pos, x, 2 * id + 1, tm + 1, tr);
+      }
     }
-    // O(lg^2(n))
-    void update(int pos, int val, int id, int tl, int tr) {
-        t[id].erase(t[id].find(cur_val[pos]));
-        t[id].insert(val);
-        if (tl == tr) {
-            cur_val[tl] = val;
-        } else {
-            int tm = (tl + tr) / 2;
-            if (pos <= tm) update(pos, val, 2 * id, tl, tm);
-            else update(pos, val, 2 * id + 1, tm + 1, tr);
-        }
+  }
+  void Update(int pos, int x) { Update(pos, x, 1, 0, n - 1); }
+  // Menor elemento >= k en a[l .. r]
+  int Query(int l, int r, int k, int id, int tl, int tr) {
+    if (l <= tl && tr <= r) {
+      auto it = tree[id].lower_bound(k);
+      if (it == tree[id].end()) return INF;
+      return *it;
     }
-    //O(lg^2(n))
-    int query(int l, int r, int x, int id, int tl, int tr) {
-        if (l <= tl and tr <= r) {
-            auto it = t[id].lower_bound(x);
-            if (it == t[id].end()) return INF;
-            else return *it;
-        }
-        int tm = (tl + tr) / 2;
-        if (r <= tm) return query(l, r, x, 2 * id, tl, tm);
-        if (tm < l) return query(l, r, x, 2 * id + 1, tm + 1, tr);
-        return combine(query(l, r, x, 2 * id, tl, tm), query(l, r, x, 2 * id + 1, tm + 1, tr));
-    }
+    int tm = (tl + tr) / 2;
+    if (r <= tm) return Query(l, r, k, 2 * id, tl, tm);
+    if (tm < l) return Query(l, r, k, 2 * id + 1, tm + 1, tr);
+    return Merge(Query(l, r, k, 2 * id, tl, tm), Query(l, r, k, 2 * id + 1, tm + 1, tr));
+  }
+  int Query(int l, int r, int k) { return Query(l, r, k, 1, 0, n - 1); }
 } st;
