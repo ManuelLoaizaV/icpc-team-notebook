@@ -1,5 +1,6 @@
 const int N = 1e5 + 1;  // total de caracteres + 1
 const int ALPHABET = 26;
+const int C = (int)'a';
 struct Trie {
   int trie[N][ALPHABET];
   bool is_terminal[N];
@@ -15,7 +16,7 @@ struct Trie {
     int n = s.size();
     int u = 0;
     for (int i = 0; i < n; i++) {
-      int c = s[i] - 'a';
+      int c = s[i] - C;
       if (trie[u][c] == 0) trie[u][c] = nodes++;
       u = trie[u][c];
     }
@@ -25,7 +26,7 @@ struct Trie {
     int n = s.size();
     int u = 0;
     for (int i = 0; i < n; i++) {
-      int c = s[i] - 'a';
+      int c = s[i] - C;
       if (trie[u][c] == 0) return false;
       u = trie[u][c];
     }
@@ -35,7 +36,7 @@ struct Trie {
     int n = s.size();
     int u = 0;
     for (int i = 0; i < n; i++) {
-      int c = s[i] - 'a';
+      int c = s[i] - C;
       if (trie[u][c] == 0) return false;
       u = trie[u][c];
     }
