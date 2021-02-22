@@ -9,6 +9,7 @@ struct Hash {
   Long mod, base;
   vector<Long> pot;
   vector<vector<Long>> h;
+  Hash(void) {}
   Hash(Long new_mod = MOD, Long new_base = B, Long new_n = N) {
     mod = new_mod;
     base = new_base;
@@ -45,6 +46,7 @@ struct Hash {
 };
 struct MultiHash {
   vector<Hash> hashes;
+  MultiHash(void) {}
   MultiHash(const vector<Long>& mods, const vector<Long>& bases) {
     for (int i = 0; i < mods.size(); i++) hashes.push_back(Hash(mods[i], bases[i]));
   }
@@ -52,7 +54,7 @@ struct MultiHash {
     for (int i = 0; i < hashes.size(); i++) hashes[i].Build(s);
   }
   vector<Long> Query(int x1, int y1, int x2, int y2) {
-    vector<Longs> ans;
+    vector<Long> ans;
     for (int i = 0; i < hashes.size(); i++)
       ans.push_back(hashes[i].Query(x1, y1, x2, y2));
     return ans;
@@ -63,7 +65,7 @@ Long random(Long a, Long b) { return uniform_int_distribution<Long> (a, b) (rng)
 vector<Long> GetBases(const vector<Long>& mods) {
   vector<Long> ans;
   for (Long m : mods) {
-    Long base = 2LL * random(33, m / 2) + 1;
+    Long base = 2LL * random(33, (m - 2) / 2) + 1;
     ans.push_back(base);
   }
   return ans;
