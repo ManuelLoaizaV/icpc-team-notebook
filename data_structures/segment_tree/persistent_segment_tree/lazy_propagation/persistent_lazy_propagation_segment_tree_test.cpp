@@ -1,3 +1,8 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long Long;
+
 struct Node {
   Long sum;
   Long lazy;
@@ -19,6 +24,7 @@ struct Node {
     return {new_left, new_right};
   }
 };
+
 struct SegmentTree {
   int n;
   vector<Node*> roots;
@@ -67,4 +73,46 @@ struct SegmentTree {
     Update(l, r, add, new_root, 0, n - 1);
     roots.push_back(new_root);
   }
+  void BackInTime(int t) {
+    while (roots.size() > t + 1) roots.pop_back();
+  }
 };
+
+int main(void) {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  int n, m;
+  cin >> n >> m;
+  vector<Long> a(n);
+  for (int i = 0; i < n; i++) cin >> a[i];
+  SegmentTree st(a);
+  while (m--) {
+    char q;
+    cin >> q;
+    if (q == 'C') {
+      int l, r;
+      Long d;
+      cin >> l >> r >> d;
+      l--;
+      r--;
+      st.Update(l, r, d);
+    } else if (q == 'Q') {
+      int l, r;
+      cin >> l >> r;
+      l--;
+      r--;
+      cout << st.Query(l, r) << '\n';
+    } else if (q == 'H') {
+      int l, r, t;
+      cin >> l >> r >> t;
+      l--;
+      r--;
+      cout << st.Query(l, r, t) << '\n';
+    } else {
+      int t;
+      cin >> t;
+      st.BackInTime(t);
+    }
+  }
+  return 0;
+}
