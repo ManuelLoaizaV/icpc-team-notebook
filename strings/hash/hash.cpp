@@ -1,7 +1,7 @@
 const Long MOD = 1e9 + 7;
 const Long B = 67;
-const int N = 1e3;
-const Long C = (Long) 'a';
+const int N = 2e3 + 10;
+const Long C = (Long) '1';
 Long Add(Long a, Long b, Long m) { return (a + b) % m; }
 Long Mul(Long a, Long b, Long m) { return (a * b) % m; }
 Long Sub(Long a, Long b, Long m) { return (a - b + m) % m; }
@@ -18,12 +18,11 @@ struct Hash {
     pot[0] = 1;
     for (int i = 1; i < new_n; i++) pot[i] = Mul(pot[i - 1], base, mod);
   }
-  void Build(const vector<string>& s) {
+  void Build(const string& s) {
     int n = s.size();
-    int m = s[0].size();
     int len = h.size();
     for (int i = 0; i < n; i++) {
-      h[i] = s[i][j] - C + 1;
+      h[i] = s[i] - C + 1;
       if (i > 0) h[i] = Add(h[i], Mul(h[i - 1], base, mod), mod);
     }
   }
@@ -38,13 +37,12 @@ struct MultiHash {
   MultiHash(const vector<Long>& mods, const vector<Long>& bases) {
     for (int i = 0; i < mods.size(); i++) hashes.push_back(Hash(mods[i], bases[i]));
   }
-  void Build(const vector<string>& s) {
+  void Build(const string& s) {
     for (int i = 0; i < hashes.size(); i++) hashes[i].Build(s);
   }
   vector<Long> Query(int l, int r) {
     vector<Long> ans;
-    for (int i = 0; i < hashes.size(); i++)
-      ans.push_back(hashes[i].Query(l, r));
+    for (int i = 0; i < hashes.size(); i++) ans.push_back(hashes[i].Query(l, r));
     return ans;
   }
 };
@@ -58,3 +56,5 @@ vector<Long> GetBases(const vector<Long>& mods) {
   }
   return ans;
 }
+vector<Long> mods = {1000000007, 1000000009};
+vector<Long> bases = GetBases(mods);
