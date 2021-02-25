@@ -57,4 +57,4 @@ struct Trie {
     }
     return is_terminal[u];
   }
-};
+} trie;
