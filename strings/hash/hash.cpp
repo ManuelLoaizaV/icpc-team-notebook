@@ -1,35 +1,60 @@
-const int N = 1e5;
-const Long B[2] = {29LL, 31LL};
 const Long MOD = 1e9 + 7;
-Long P[N][2];
+const Long B = 67;
+const int N = 1e3;
+const Long C = (Long) 'a';
+Long Add(Long a, Long b, Long m) { return (a + b) % m; }
+Long Mul(Long a, Long b, Long m) { return (a * b) % m; }
+Long Sub(Long a, Long b, Long m) { return (a - b + m) % m; }
 struct Hash {
-  Long h[N][2];
-  void Initialize(const string& s) {
+  Long mod, base;
+  vector<Long> pot;
+  vector<Long> h;
+  Hash(void) {}
+  Hash(Long new_mod = MOD, Long new_base = B, Long new_n = N) {
+    mod = new_mod;
+    base = new_base;
+    h = vector<Long>(new_n); 
+    pot = vector<Long>(new_n);
+    pot[0] = 1;
+    for (int i = 1; i < new_n; i++) pot[i] = Mul(pot[i - 1], base, mod);
+  }
+  void Build(const vector<string>& s) {
     int n = s.size();
-    h[0][0] = h[0][1] = s[0] - 'a' + 1;
-    for (int i = 1; i < n; i++) {
-      for (int j = 0; j < 2; j++) {
-        h[i][j] = Add(Mul(h[i - 1][j], B[j]), s[i] - 'a' + 1);
-      }
+    int m = s[0].size();
+    int len = h.size();
+    for (int i = 0; i < n; i++) {
+      h[i] = s[i][j] - C + 1;
+      if (i > 0) h[i] = Add(h[i], Mul(h[i - 1], base, mod), mod);
     }
   }
-  Pair Query(int l, int r) {
-    vector<Long> ans(2);
-    for (int j = 0; j < 2; j++) {
-      if (l == 0) {
-        ans[j] = h[r][j];
-      } else {
-        ans[j] = Sub(h[r][j], Mul(h[l - 1][j], P[r - l + 1][j]));
-      }
-    }
-    return {ans[0], ans[1]};
+  Long Query(int l, int r) {
+    if (l == 0) return h[r];
+    return Sub(h[r], Mul(h[l - 1], pot[r - l + 1], mod), mod);
   }
 };
-void Precalculate(int n) {
-  P[0][0] = P[0][1] = 1;
-  for (int i = 1; i < n; i++) {
-    for (int j = 0; j < 2; j++) {
-      P[i][j] = Mul(P[i - 1][j], B[j]);
-    }
+struct MultiHash {
+  vector<Hash> hashes;
+  MultiHash(void) {}
+  MultiHash(const vector<Long>& mods, const vector<Long>& bases) {
+    for (int i = 0; i < mods.size(); i++) hashes.push_back(Hash(mods[i], bases[i]));
   }
+  void Build(const vector<string>& s) {
+    for (int i = 0; i < hashes.size(); i++) hashes[i].Build(s);
+  }
+  vector<Long> Query(int l, int r) {
+    vector<Long> ans;
+    for (int i = 0; i < hashes.size(); i++)
+      ans.push_back(hashes[i].Query(l, r));
+    return ans;
+  }
+};
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+Long random(Long a, Long b) { return uniform_int_distribution<Long> (a, b) (rng); }
+vector<Long> GetBases(const vector<Long>& mods) {
+  vector<Long> ans;
+  for (Long m : mods) {
+    Long base = 2LL * random(33, (m - 2) / 2) + 1;
+    ans.push_back(base);
+  }
+  return ans;
 }
