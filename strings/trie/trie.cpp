@@ -5,7 +5,7 @@ struct Trie {
   int trie[N][ALPHABET];
   bool is_terminal[N];
   int nodes = 1;
-  void Build(void) {
+  void Clear(void) {
     for (int i = 0; i < nodes; i++) {
       is_terminal[i] = false;
       for (int j = 0; j < ALPHABET; j++) trie[i][j] = 0;
