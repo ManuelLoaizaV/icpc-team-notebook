@@ -2,9 +2,7 @@
 //#pragma GCC target ("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 #include <bits/stdc++.h>
 #include <unistd.h>
-#define FAST_IO ios::sync_with_stdio(0);cin.tie(NULL)
 #define debug(x) cout << #x << " = " << x << endl
-#define all(v) (v).begin(),(v).end()
 using namespace std;
 
 typedef long long Long;
@@ -20,6 +18,7 @@ mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
 Long random(Long a, Long b) { return uniform_int_distribution<Long> (a, b) (rng); }
 
 int main(void) {
-  FAST_IO;
+  ios::sync_with_stdio(false);
+  cin.tie(0);
   return 0;
 }
