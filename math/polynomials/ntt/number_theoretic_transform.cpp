@@ -6,12 +6,12 @@ const Long ROOT = 3;
 const Long ROOT_INV = 332748118;
 struct Field {
   Long n;
-  Field(Long new_n = 0) : n(new_n) {}
-  Field operator + (const Field& other) const { return (n + other.n) % MOD; }
-  Field operator - (const Field& other) const { return (n - other.n + MOD) % MOD; }
-  Field operator * (const Field& other) const { return (n * other.n) % MOD; }
-  Field operator *= (const Field& other) {
-    n *= other.n;
+  Field(Long _n = 0) : n(_n) {}
+  Field operator + (const Field& o) const { return (n + o.n) % MOD; }
+  Field operator - (const Field& o) const { return (n - o.n + MOD) % MOD; }
+  Field operator * (const Field& o) const { return (n * o.n) % MOD; }
+  Field operator *= (const Field& o) {
+    n *= o.n;
     n %= MOD;
     return *this;
   }

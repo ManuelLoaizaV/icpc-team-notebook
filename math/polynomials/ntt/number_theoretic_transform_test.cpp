@@ -2,7 +2,7 @@
 using namespace std;
 
 typedef long long Long;
-
+typedef vector<Long> Polynomial;
 const int N = 2e5;
 const Long MOD = 998244353;
 const Long ROOT = 3;
@@ -10,18 +10,21 @@ const Long ROOT_INV = 332748118;
 
 struct Field {
   Long n;
-  Field(Long new_n = 0) : n(new_n) {}
-  Field operator + (const Field& other) const { return (n + other.n) % MOD; }
-  Field operator - (const Field& other) const { return (n - other.n + MOD) % MOD; }
-  Field operator * (const Field& other) const { return (n * other.n) % MOD; }
-  Field operator *= (const Field& other) {
-    n *= other.n;
+  Field(Long _n = 0) : n(_n) {}
+  Field operator + (const Field& o) const { return (n + o.n) % MOD; }
+  Field operator - (const Field& o) const { return (n - o.n + MOD) % MOD; }
+  Field operator * (const Field& o) const { return (n * o.n) % MOD; }
+  Field operator *= (const Field& o) {
+    n *= o.n;
     n %= MOD;
     return *this;
   }
 };
+
 const Field TWO_INV(499122177);
+
 Long Mul(Long a, Long b) { return (a * b) % MOD; }
+
 Long FastPow(Long a, Long b) {
   Long ans = 1;
   while (b > 0) {
@@ -31,6 +34,7 @@ Long FastPow(Long a, Long b) {
   }
   return ans;
 }
+
 void NTT(vector<Field>& a, bool is_inverse, Field w_n) {
   int n = a.size();
   if (n == 1) return;
@@ -52,7 +56,7 @@ void NTT(vector<Field>& a, bool is_inverse, Field w_n) {
     w *= w_n;
   }
 }
-typedef vector<Long> Polynomial;
+
 Polynomial operator * (const Polynomial& a, const Polynomial& b) {
   int n = 1;
   vector<Field> dft_a(a.begin(), a.end());
