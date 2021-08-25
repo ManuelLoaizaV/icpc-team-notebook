@@ -48,9 +48,9 @@ int R[MAX_N + 9];
 void DFT(Complex* a, int n, bool inv) {
 	for (int i = 0; i < n; i++) if (R[i] < i) swap(a[R[i]] ,a[i]);
 	for (int m = 2; m <= n; m *= 2) {
-		double z = 2 * pi / m * (inv ? -1: 1); // FFT
-		Complex wi = Complex(cos(z), sin(z)); // FFT
-		// Complex wi = Root(m, inv); // NTT
+		double z = 2 * pi / m * (inv ? -1: 1);  // FFT
+		Complex wi = Complex(cos(z), sin(z));  // FFT
+		// Complex wi = Root(m, inv);  // NTT
 		for (int j = 0; j < n; j += m) {
 			Complex w(1);
 			for (int k = j, k2 = j + m / 2; k2 < j + m; k++, k2++) {
@@ -60,13 +60,13 @@ void DFT(Complex* a, int n, bool inv) {
 			}
 		}
 	}
-	if (inv) for(int i = 0; i < n; i++) a[i] /= n; // FFT
-	/*
-  if (inv) { // NTT
+	if (inv) for(int i = 0; i < n; i++) a[i] /= n;  // FFT
+  /* NTT
+  if (inv) {
 		Complex z(Pow(n, MOD-2)); // Pow: modular exponentiation
 		for (int i = 0; i < n; i++) a[i] = a[i] * z;
 	}
-	*/
+  */
 }
 Poly Multiply(Poly& p1, Poly& p2){
 	int n = p1.size() + p2.size() + 1;
@@ -84,7 +84,7 @@ Poly Multiply(Poly& p1, Poly& p2){
 	DFT(cp1, m, 1);
 	Poly result;
 	n -= 2;
-	for (int i = 0; i < n; i++) result.push_back((Type) floor(cp1[i].Real() + 0.5)); // FFT
-	// for (int i = 0; i < n; i++) result.push_back(cp1[i].x); // NTT
+	for (int i = 0; i < n; i++) result.push_back((Type) floor(cp1[i].Real() + 0.5));  // FFT
+	// for (int i = 0; i < n; i++) result.push_back(cp1[i].x);  // NTT
 	return result;
 }
