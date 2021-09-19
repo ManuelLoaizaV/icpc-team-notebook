@@ -1,52 +1,42 @@
-// define NEUT and oper
-int sz[N], dep[N], fat[N], pos[N], head[N];
-int cur_pos;
-
-void dfs_size(int from){
+int anc[N], depth[N], head[N], heavy[N], pos[N], sz[N];
+int cur_pos = 0;
+void GetSize(int from) {
+  heavy[from] = -1;
   sz[from] = 1;
-  for(int to: adj[from]){
-    if(to == fat[from]) continue;
-    dep[to] = dep[from] + 1;
-    fat[to] = from;
-    dfs_size(to);
+  for (int to : adj[from]) {
+    if (to == anc[from]) continue;
+    depth[to] = depth[from] + 1;
+    anc[to] = from;
+    GetSize(to);
     sz[from] += sz[to];
+    if (heavy[from] == -1 || sz[to] > sz[heavy[from]]) heavy[from] = to;
   }
 }
-
-void hld(int from, int prog){
+void Build(int from, int top) {
   pos[from] = cur_pos++;
-  head[from] = prog;
-  int big_ch = -1;
-  for(int to: adj[from]){
-    if(to == fat[from]) continue;
-    if(big_ch < 0 || sz[big_ch] < sz[to]) big_ch = to;
+  head[from] = top;
+  if (sz[from] > 1) {
+    Build(heavy[from], top);
+    for (int to : adj[from])
+      if (to != anc[from] && to != heavy[from])
+        Build(to, to);
   }
-  if(big_ch >= 0) hld(big_ch, prog);
-  for(int to: adj[from]){
-    if(to == fat[from] || to == big_ch) continue;
-    hld(to, to);
-  }
-} 
-
-void hld_init(){
-  fat[0] = -1;
-  dep[0] = 0;
-  dfs_size(0);
+}
+void Initialize(void){
   cur_pos = 0;
-  hld(0, 0);
+  anc[0] = -1;
+  depth[0] = 0;
+  GetSize(0);
+  Build(0, 0);
 }
-
-int query(int u, int v, SegmentTree& T){
-  int re = NEUT;
-  while(head[u] != head[v]){
-    if(dep[head[u]] > dep[head[v]]) swap(u, v);
-    re = oper(re, T.Query(pos[head[v]], pos[v]));
-    v = fat[head[v]];
+Long Query(int u, int v, SegmentTree& st){
+  Long ans = E;  // TODO: Define E, neutral element of Op
+  while (head[u] != head[v]) {
+    if (depth[head[u]] > depth[head[v]]) swap(u, v);
+    ans = Op(ans, st.Query(pos[head[v]], pos[v]));  // TODO: Define Op
+    v = anc[head[v]];
   }
-  if(dep[u] > dep[v]) swap(u, v);
-  re = oper(re, T.Query(pos[u], pos[v]));
-  return re;
+  if (depth[u] > depth[v]) swap(u, v);
+  ans = Op(ans, st.Query(pos[u], pos[v]));
+  return ans;
 }
-
-// for updateing: replace Query with Update
-// queries on edges: change pos[u] to pos[u + 1]
