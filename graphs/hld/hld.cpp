@@ -22,7 +22,7 @@ void Build(int from, int top) {
         Build(to, to);
   }
 }
-void Initialize(void){
+void BuildHLD(void){
   cur_pos = 0;
   anc[0] = -1;
   depth[0] = 0;
