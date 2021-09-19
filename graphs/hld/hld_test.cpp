@@ -1,143 +1,163 @@
-// timus:https://acm.timus.ru/problem.aspx?space=1&num=1553
-
+// https://cses.fi/problemset/task/2134/
 #include <bits/stdc++.h>
-#define FAST_IO ios::sync_with_stdio(0); cin.tie(nullptr)
-#define debug(x) cerr << "debug " << (#x) << ": " << (x) << endl
-#define rall(x) (x).rbegin(), (x).rend()
-#define all(x) (x).begin(), (x).end()
-#define sz(x) int((x).size())
-#define ss second
-#define ff first
-#define endl '\n'
 using namespace std;
-typedef pair<int, int> ii;
-typedef long long Long;
-const int N = 250009;
-const int LG = 32 - __builtin_clz(N);
-const int INF = 1e9;
+
+typedef int Long;
+
+const int N = 2e5;
+
+// Graph
+
 vector<int> adj[N];
 
+void AddEdge(int u, int v) {
+  adj[u].push_back(v);
+  adj[v].push_back(u);
+}
+
+// Segment Tree
+
 struct SegmentTree {
-  int tree[4 * N];
-  int _n;
-  SegmentTree(int _n): _n(_n) {}
-  Long Merge(const int& x) { return x; }
+  int n;
+  Long tree[4 * N];
+
+  SegmentTree(void) {}
+
+  SegmentTree(int n_) { n = n_; }
+
+  Long Merge(const Long& x) { return x; }
+
   Long Merge(const Long& x, const Long& y) { return max(x, y); }
-  void Build(const vector<int>& a, int id, int tl, int tr) {
-    if (tl == tr) tree[id] = Merge(a[tl]);
-    else {
-      int tm = (tl + tr) >> 1;
+
+  void Build(const vector<Long>& a, int id, int tl, int tr) {
+    if (tl == tr) {
+      tree[id] = Merge(a[tl]);
+    } else {
+      int tm = (tl + tr) / 2;
       Build(a, 2 * id, tl, tm);
       Build(a, 2 * id + 1, tm + 1, tr);
       tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
     }
   }
-  void Build(const vector<int>& a) { Build(a, 1, 0, _n - 1); }
-  void Update(int pos, int val, int id, int tl, int tr) {
-    if (tl == tr) tree[id] += Merge(val);
-    else {
-      int tm = (tl + tr) >> 1;
-      if (pos <= tm) Update(pos, val, 2 * id, tl, tm);
-      else Update(pos, val, 2 * id + 1, tm + 1, tr);
-      tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
+
+  void Build(const vector<Long>& a) { Build(a, 1, 0, n - 1); }
+
+  void Update(int pos, Long val, int id, int tl, int tr) {
+    if (tl == tr) {
+      tree[id] = Merge(val);
+    } else {
+      int tm = (tl + tr) / 2;
+     if (pos <= tm) {
+       Update(pos, val, 2 * id, tl, tm);
+     } else {
+       Update(pos, val, 2 * id + 1, tm + 1, tr);
+     }
+     tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
     }
   }
-  void Update(int pos, int val) { Update(pos, val, 1, 0, _n - 1); }
+
+  void Update(int pos, Long val) { Update(pos, val, 1, 0, n - 1); }
+
   Long Query(int l, int r, int id, int tl, int tr) {
     if (l <= tl && tr <= r) return tree[id];
-    int tm = (tl + tr) >> 1;
+    int tm = (tl + tr) / 2;
     if (r <= tm) return Query(l, r, 2 * id, tl, tm);
     if (tm < l) return Query(l, r, 2 * id + 1, tm + 1, tr);
     return Merge(Query(l, r, 2 * id, tl, tm), Query(l, r, 2 * id + 1, tm + 1, tr));
   }
-  Long Query(int l, int r) { return Query(l, r, 1, 0, _n - 1); }
+
+  Long Query(int l, int r) { return Query(l, r, 1, 0, n - 1); }
 };
 
-// define NEUT and oper
-int sz[N], dep[N], fat[N], pos[N], head[N];
-int cur_pos;
+// HLD
+const int E = 0;
+int anc[N], depth[N], head[N], heavy[N], pos[N], sz[N];
+int cur_pos = 0;
 
-void dfs_size(int from){
+int Op(int x, int y) { return max(x, y); }
+
+void GetSize(int from) {
+  heavy[from] = -1;
   sz[from] = 1;
-  for(int to: adj[from]){
-    if(to == fat[from]) continue;
-    dep[to] = dep[from] + 1;
-    fat[to] = from;
-    dfs_size(to);
+  for (int to : adj[from]) {
+    if (to == anc[from]) continue;
+    depth[to] = depth[from] + 1;
+    anc[to] = from;
+    GetSize(to);
     sz[from] += sz[to];
+    if (heavy[from] == -1 || sz[to] > sz[heavy[from]]) heavy[from] = to;
   }
 }
 
-void hld(int from, int prog){
+void Build(int from, int top) {
   pos[from] = cur_pos++;
-  head[from] = prog;
-  int big_ch = -1;
-  for(int to: adj[from]){
-    if(to == fat[from]) continue;
-    if(big_ch < 0 || sz[big_ch] < sz[to]) big_ch = to;
-  }
-  if(big_ch >= 0) hld(big_ch, prog);
-  for(int to: adj[from]){
-    if(to == fat[from] || to == big_ch) continue;
-    hld(to, to);
+  head[from] = top;
+  if (sz[from] > 1) {
+    Build(heavy[from], top);
+    for (int to : adj[from])
+      if (to != anc[from] && to != heavy[from])
+        Build(to, to);
   }
 }
 
-void hld_init(){
-  fat[0] = -1;
-  dep[0] = 0;
-  dfs_size(0);
+void BuildHLD(void){
   cur_pos = 0;
-  hld(0, 0);
+  anc[0] = -1;
+  depth[0] = 0;
+  GetSize(0);
+  Build(0, 0);
 }
 
-Long query(int u, int v, SegmentTree& T){
-  Long re = 0;
-  while(head[u] != head[v]){
-    if(dep[head[u]] > dep[head[v]]) swap(u, v);
-    re = max(re, T.Query(pos[head[v]], pos[v]));
-    v = fat[head[v]];
+Long Query(int u, int v, SegmentTree& st){
+  Long ans = E;  // TODO: Define E, neutral element of Op
+  while (head[u] != head[v]) {
+    if (depth[head[u]] > depth[head[v]]) swap(u, v);
+    ans = Op(ans, st.Query(pos[head[v]], pos[v]));  // TODO: Define Op
+    v = anc[head[v]];
   }
-  if(dep[u] > dep[v]) swap(u, v);
-  re = max(re, T.Query(pos[u], pos[v]));
-  return re;
+  if (depth[u] > depth[v]) swap(u, v);
+  ans = Op(ans, st.Query(pos[u], pos[v]));
+  return ans;
 }
 
-// for updating: replace Query with Update
-// queries on edges: change pos[u] to pos[u + 1]
+void Update(int u, Long val, SegmentTree& st) {
+  st.Update(pos[u], val);
+}
 
-void solve(){
-  int n; cin >> n;
-  for(int i = 1; i < n; i++){
-    int u, v; cin >> u >> v;
-    u--; v--;
-    adj[u].push_back(v);
-    adj[v].push_back(u);
+int main(void) {
+  ios::sync_with_stdio(false);
+  cin.tie(0);
+  int n, q;
+  cin >> n >> q;
+  vector<int> a(n);
+  for (int i = 0; i < n; i++) cin >> a[i];
+  for (int i = 0; i < n - 1; i++) {
+    int u, v;
+    cin >> u >> v;
+    u--;
+    v--;
+    AddEdge(u, v);
   }
-  vector<int> a(n, 0);
-  SegmentTree T(n);
-  T.Build(a);
-  hld_init();
-  int q; cin >> q;
-  while(q--){
-    char c; cin >> c;
-    if(c == 'G'){
-      int u, v; cin >> u >> v;
-      u--; v--;
-      cout << query(u, v, T) << endl;
-    }
-    else{
-      int u, val; cin >> u >> val;
+  BuildHLD();
+  SegmentTree st(n);
+  vector<int> euler(n);
+  for (int i = 0; i < n; i++) euler[pos[i]] = a[i];
+  st.Build(euler);
+  while (q--) {
+    int type;
+    cin >> type;
+    if (type == 1) {
+      int s, x;
+      cin >> s >> x;
+      s--;
+      Update(s, x, st);
+    } else {
+      int u, v;
+      cin >> u >> v;
       u--;
-      T.Update(pos[u], val);
+      v--;
+      cout << Query(u, v, st) << " ";
     }
   }
-}
-
-int main(){
-  FAST_IO;
-  int tt = 1;
-  // cin >> tt;
-  while(tt--) solve();
   return 0;
 }
