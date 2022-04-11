@@ -5,14 +5,14 @@ typedef long long Long;
 
 struct Line {
   mutable Long m, b, p;
-  bool operator < (const Line& other) const { return m < other.m; }
-  bool operator < (Long x) const { return p < x; }
+  bool operator<(const Line& other) const { return m < other.m; }
+  bool operator<(Long x) const { return p < x; }
 };
 
 struct LineContainer : multiset<Line, less<>> {
-  //static const Double INF = 1/.0;
+  // static const Double INF = 1/.0;
   static const Long INF = LLONG_MAX;
-  //Double Div(Double a, Double b) { return a / b; }
+  // Double Div(Double a, Double b) { return a / b; }
   Long Div(Long a, Long b) { return a / b - ((a ^ b) < 0 && a % b); }
   bool Intersect(iterator x, iterator y) {
     if (y == end()) return x->p = INF, 0;
@@ -23,7 +23,7 @@ struct LineContainer : multiset<Line, less<>> {
     }
     return x->p >= y->p;
   }
-  // Agregar recta de la forma mx + b
+  // Add line mx + b
   void Add(Long m, Long b) {
     auto z = insert({m, b, 0});
     auto y = z++;
@@ -32,11 +32,11 @@ struct LineContainer : multiset<Line, less<>> {
     if (x != begin() && Intersect(--x, y)) Intersect(x, y = erase(y));
     while ((y = x) != begin() && (--x)->p >= y->p) Intersect(x, erase(y));
   }
-  // Obtener maximo valor en el punto x
+  // Get max value at x
   Long Query(Long x) {
     assert(!empty());
-    auto l = *lower_bound(x);
-    return l.m * x + l.b;
+    auto line = *lower_bound(x);
+    return line.m * x + line.b;
   }
 } cht;
 
