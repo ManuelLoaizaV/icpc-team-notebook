@@ -1,4 +1,4 @@
-//https://www.spoj.com/problems/MATSUM/en/
+// https://www.spoj.com/problems/MATSUM/en/
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -47,7 +47,6 @@ struct FenwickTree {
   }
 } ft;
 
-
 void Solve(void) {
   Long n;
   cin >> n;
@@ -78,4 +77,3 @@ int main(void) {
   while (t--) Solve();
   return 0;
 }
-
