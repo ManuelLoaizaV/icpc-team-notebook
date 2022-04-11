@@ -5,7 +5,9 @@ struct DisjointSets {
     parent[u] = u;
     size[u] = 1;
   }
-  void Build(int n) { for (int i = 0; i < n; i++) MakeSet(i); }
+  void Build(int n) {
+    for (int i = 0; i < n; i++) MakeSet(i);
+  }
   int Find(int u) {
     if (parent[u] == u) return u;
     return (parent[u] = Find(parent[u]));

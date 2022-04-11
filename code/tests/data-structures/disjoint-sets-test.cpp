@@ -1,8 +1,8 @@
-//https://codeforces.com/problemset/problem/1095/F
-#include <iostream>
-#include <vector>
+// https://codeforces.com/problemset/problem/1095/F
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
+#include <iostream>
+#include <vector>
 using namespace __gnu_pbds;
 using namespace std;
 
@@ -17,7 +17,7 @@ Long a[N];
 struct Edge {
   int u, v;
   Long w;
-  bool operator < (const Edge& other) const {
+  bool operator<(const Edge& other) const {
     return w < other.w;
   }
 };
@@ -26,20 +26,22 @@ struct DisjointSets {
   int parent[N];
   int size[N];
   Long minimum[N];
-  
+
   void MakeSet(int u) {
     parent[u] = u;
     size[u] = 1;
     minimum[u] = a[u];
   }
-  
-  void Build(int n) { for (int i = 0; i < n; i++) MakeSet(i); }
-  
+
+  void Build(int n) {
+    for (int i = 0; i < n; i++) MakeSet(i);
+  }
+
   int Find(int u) {
     if (parent[u] == u) return u;
     return (parent[u] = Find(parent[u]));
   }
-  
+
   void Join(int u, int v) {
     u = Find(u);
     v = Find(v);
@@ -50,14 +52,13 @@ struct DisjointSets {
       minimum[v] = min(minimum[v], minimum[u]);
     }
   }
-  
+
   bool SameSet(int u, int v) { return Find(u) == Find(v); }
-  
+
   int GetSize(int u) { return size[Find(u)]; }
 
   Long GetMinimum(int u) { return minimum[Find(u)]; }
 } dsu;
-
 
 int main(void) {
   ios::sync_with_stdio(0);
