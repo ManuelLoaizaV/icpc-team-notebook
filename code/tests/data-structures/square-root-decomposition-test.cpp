@@ -1,4 +1,4 @@
-//https://cses.fi/problemset/task/1648/
+// https://cses.fi/problemset/task/1648/
 #include <cmath>
 #include <iostream>
 #include <vector>

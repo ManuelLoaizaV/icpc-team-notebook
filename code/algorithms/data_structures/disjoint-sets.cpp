@@ -1,3 +1,4 @@
+const int N = 1e5;
 struct DisjointSets {
   int parent[N];
   int size[N];
