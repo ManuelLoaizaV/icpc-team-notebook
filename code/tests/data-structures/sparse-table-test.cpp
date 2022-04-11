@@ -1,4 +1,4 @@
-//https://www.spoj.com/problems/RMQSQ/en/
+// https://www.spoj.com/problems/RMQSQ/en/
 #include <climits>
 #include <iostream>
 #include <vector>
@@ -18,35 +18,6 @@ struct SparseTable {
       for (int i = 0; i + (1 << j) <= n; i++)
         st[i][j] = f(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
   }
-  /*
-  int Query(int l, int r) {
-    int ans = E;
-    int range = r - l + 1;
-    int lg = 31 - __builtin_clz(range);
-    for (int j = lg; j >= 0; j--) {
-      if ((1 << j) <= range) {
-        ans = f(ans, st[l][j]);
-        l += (1 << j);
-        range -= (1 << j);
-      }
-    }
-    return ans;
-  }
-  int Query(int l, int r) {
-    int ans = st[l][0];
-    if (l == r) return ans;
-    l++;
-    int range = r - l + 1;
-    while (range > 0) {
-      int step = range & -range;
-      int lg = __builtin_ctz(step);
-      ans = f(ans, st[l][lg]);
-      l += step;
-      range -= step;
-    }
-    return ans;
-  }
-  */
   int Query(int l, int r) {
     int range = r - l + 1;
     int lg = 31 - __builtin_clz(range);

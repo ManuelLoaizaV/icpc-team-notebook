@@ -5,7 +5,8 @@ struct SparseTable {
   int st[N][LG];
   int f(int x) { return x; }
   int f(int x, int y) { return min(x, y); }
-  void Build(vector<int>& a, int n) {
+  void Build(const vector<int>& a) {
+    int n = (int)a.size();
     for (int i = 0; i < n; i++) st[i][0] = f(a[i]);
     for (int j = 1; j < LG; j++)
       for (int i = 0; i + (1 << j) <= n; i++)
