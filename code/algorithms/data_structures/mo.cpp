@@ -3,7 +3,7 @@ struct Query {
   int id, l, r;
   Query() {}
   Query(int id, int l, int r) : id(id), l(l), r(r) {}
-  bool operator < (const Query& other) const {
+  bool operator<(const Query& other) const {
     int block = l / S;
     int other_block = other.l / S;
     if (block != other_block) return (block < other_block);

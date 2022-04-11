@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#define FAST_IO ios::sync_with_stdio(0);cin.tie(nullptr)
 using namespace std;
 
 const int SZ = 800;
@@ -7,7 +6,7 @@ struct Query {
   int id, l, r;
   Query() {}
   Query(int id, int l, int r) : id(id), l(l), r(r) {}
-  bool operator < (const Query& other) const {
+  bool operator<(const Query& other) const {
     int block = l / SZ;
     int other_block = other.l / SZ;
     if (block != other_block) return (block < other_block);
@@ -36,7 +35,8 @@ struct Mo {
 };
 
 int main(void) {
-  FAST_IO;
+  ios::sync_with_stdio(false);
+  cin.tie(0);
   int n;
   cin >> n;
   vector<int> a(n);
