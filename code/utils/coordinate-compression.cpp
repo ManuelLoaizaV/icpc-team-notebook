@@ -1,4 +1,4 @@
-void CoordinateCompression(vector<int>& a) {
+void Compress(vector<int>& a) {
   int n = a.size();
   vector<pair<int, int>> pairs(n);
   for (int i = 0; i < n; i++) pairs[i] = {a[i], i};
