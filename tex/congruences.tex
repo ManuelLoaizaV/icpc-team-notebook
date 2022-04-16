@@ -1,0 +1,127 @@
+\begin{defn}
+    Given integers $a, b, m$ with $m > 0$.
+    We say that $a$ is congruent to $b$ modulo $m$
+    and we write $a \equiv b \pmod{m}$
+    if $m$ divides the difference $a - b$.
+\end{defn}
+
+\begin{theorem}
+    Congruence is an equivalence relation.
+\end{theorem}
+
+\begin{theorem}
+    If $a \equiv b \pmod{m}$ and
+    $\alpha \equiv \beta \pmod{m}$, then
+    \begin{itemize}
+        \item $ax + \alpha y \equiv bx + \beta y \pmod{m}$ for all integers $x$ and $y$.
+        \item $a \alpha \equiv b \beta \pmod{m}$.
+        \item $a^n \equiv b^n \pmod{m}$ for every positive integer $n$.
+        \item $f(a) \equiv f(b) \pmod{m}$ for every polynomial $f$ with integer coefficients.
+    \end{itemize}
+\end{theorem}
+
+\begin{theorem}
+    If $c > 0$ then $a \equiv b \pmod{m}$
+    if and only if $ac \equiv bc \pmod{mc}$.
+\end{theorem}
+
+\begin{theorem}[Cancellation law]
+    If $ac \equiv bc \pmod{m}$ and if $d = (m, c)$, then
+    $a \equiv b \pmod{m/d}$.
+\end{theorem}
+
+\begin{theorem}
+    Assume $a \equiv b \pmod{m}$.
+    If $d \mid m$ and $d \mid a$ then $d \mid b$.
+\end{theorem}
+
+\begin{theorem}
+    If $a \equiv b \pmod{m}$ then
+    $(a, m) = (b, m)$.
+\end{theorem}
+
+\begin{theorem}
+    If $a \equiv b \pmod{m}$ and if $0 \leq |b - a| < m$,
+    then $a = b$.
+\end{theorem}
+
+\begin{theorem}
+    We have $a \equiv b \pmod{m}$ if and only if
+    $a$ and $b$ give the same remainder when divided by $m$.
+\end{theorem}
+
+\begin{theorem}
+    If $a \equiv b \pmod{m}$ and $a \equiv b \pmod{n}$
+    where $(m, n) = 1$, then $a \equiv b \pmod{mn}$.
+\end{theorem}
+
+\begin{theorem}
+    Assume $(a, m) = 1$. Then the linear congruence
+    $ax \equiv b \pmod{m}$ has exactly one solution.
+\end{theorem}
+
+\begin{theorem}
+    Assume $(a, m) = d$. Then the linear congruence
+    $ax \equiv b \pmod{m}$ has solutions if and only
+    if $d \mid b$.
+\end{theorem}
+
+\begin{theorem}
+    Assume $(a, m) = d$ and suppose that $d \mid b$.
+    Then the linear congruence $ax \equiv b \pmod{m}$
+    has exactly $d$ solutions modulo $m$. These are given by
+    $t, t + m/d, t + 2m/d, \dots, t + (d - 1)m/d,$
+    where $t$ is the solution, unique modulo $m/d$ of the
+    linear congruence $ax/d \equiv b/d \pmod{m/d}$.
+\end{theorem}
+
+\begin{theorem}
+    If $(a, b) = d$ there exist integers $x$ and $y$ such that
+    $ax + by = d$.
+\end{theorem}
+
+\begin{theorem}[Euler-Fermat theorem]
+    Assume $(a, m) = 1$. Then we have
+    $a^{\varphi(m)} \equiv 1 \pmod{m}$.
+\end{theorem}
+
+\begin{theorem}
+    If a prime $p$ does not divide $a$ then
+    $a^{p - 1} \equiv 1 \pmod{p}$.
+\end{theorem}
+
+\begin{theorem}[Little Fermat theorem]
+    For any integer $a$ and any prime $p$ we have
+    $a^p \equiv a \pmod{p}$.
+\end{theorem}
+
+\begin{theorem}
+    If $(a, m) = 1$ the solution (unique $\pmod{m}$)
+    of the linear congruence
+    $ax \equiv b \pmod{m}$
+    is given by
+    $x \equiv b a^{\varphi(m) - 1} \pmod{m}$.
+\end{theorem}
+
+\begin{theorem}[Lagrange]
+    Give a prime $p$, let
+    $f(x) = c_0 + c_1 x + \dots + c_n x^n$
+    be a polynomial of degree $n$ with integers coefficients such that
+    $c_n \not\equiv 0 \pmod{p}$.
+    Then the polynomial congruence
+    $f(x) \equiv 0 \pmod{p}$
+    has at most $n$ solutions.
+\end{theorem}
+
+\begin{theorem}[Wilson's theorem]
+    For any prime $p$ we have
+    $(p - 1)! \equiv -1 \pmod{p}$.
+\end{theorem}
+
+\begin{theorem}[Chinese remainder theorem]
+    Assume $m_1, \dots, m_r$ are positive integers, relatively prime in pairs.
+    Let $b_1, \dots, b_r$ be arbitrary integers.
+    Then the system of congruences
+    $x \equiv b_1 \pmod{m_1}, \dots, x \equiv b_r \pmod{m_r}$
+    has exactly one solution modulo the product $m_1 \cdots m_r$.
+\end{theorem}
