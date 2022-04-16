@@ -1,8 +1,8 @@
 const int N = 1e5;
-struct SegmentTree {
+struct MergeSortTree {
   vector<int> tree[4 * N];
   int n;
-  SegmentTree(int new_n) { n = new_n; }
+  MergeSortTree(int n) : n(n) {}
   vector<int> Merge(const vector<int>& left, const vector<int>& right) {
     int l = 0;
     int r = 0;
@@ -21,18 +21,18 @@ struct SegmentTree {
     }
     return ans;
   }
-  // O(nlgn)
-  void Build(const vector<int>& a, int id, int tl, int tr) {
+  // O(n lgn)
+  void Build(int id, int tl, int tr, const vector<int>& v) {
     if (tl == tr) {
-      tree[id] = {a[tl]};
+      tree[id] = {v[tl]};
     } else {
       int tm = (tl + tr) / 2;
-      Build(a, 2 * id, tl, tm);
-      Build(a, 2 * id + 1, tm + 1, tr);
+      Build(2 * id, tl, tm, v);
+      Build(2 * id + 1, tm + 1, tr, v);
       tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
     }
   }
-  // O(n). Con actualizaciones es mejor utilizar multiset u ost de nodos
+  // O(n). Utilizar multiset u ost de nodos para O(lg^2 n).
   void Update(int pos, int val, int id, int tl, int tr) {
     if (tl == tr) {
       tree[id] = {val};
@@ -46,7 +46,6 @@ struct SegmentTree {
       tree[id] = Merge(tree[2 * id], tree[2 * id + 1]);
     }
   }
-  void Update(int pos, int val) { Update(pos, val, 1, 0, n - 1); }
   // O(lg^2(n))
   int Query(int l, int r, int x, int id, int tl, int tr) {
     if (l <= tl && tr <= r) {
@@ -60,5 +59,7 @@ struct SegmentTree {
     if (tm < l) return Query(l, r, x, 2 * id + 1, tm + 1, tr);
     return Query(l, r, x, 2 * id, tl, tm) + Query(l, r, x, 2 * id + 1, tm + 1, tr);
   }
+  void Build(const vector<int>& v) { Build(1, 0, n - 1, v); }
+  void Update(int pos, int val) { Update(pos, val, 1, 0, n - 1); }
   int Query(int l, int r, int x) { return Query(l, r, x, 1, 0, n - 1); }
-} st;
+};
