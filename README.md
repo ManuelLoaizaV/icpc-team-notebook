@@ -1,8 +1,17 @@
-# ACM ICPC team notebook
+# ACM ICPC WeakTrichotomy notebook
 
-This repository hosts [PUCP](https://es.wikipedia.org/wiki/Pontificia_Universidad_Cat%C3%B3lica_del_Per%C3%BA)'s
-ICPC team reference document.
+This repository hosts UPC's ICPC team reference document.
 It consists of copy-pasteable C++ code for ICPC-style programming competitions.
+
+## Team
+
+* WeakTrichotomy
+
+## Members
+
+* Jemisson Daniel Coronel Baldeón
+* Manuel Alejandro Loaiza Vasquez
+* Oscar Burga
 
 # Setup (optional)
 
