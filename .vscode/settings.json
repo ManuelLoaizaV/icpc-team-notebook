@@ -1,0 +1,6 @@
+{
+    "latex-workshop.latex.autoBuild.run": "never",
+    "files.associations": {
+        "chrono": "cpp"
+    },
+}
