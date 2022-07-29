@@ -5,6 +5,7 @@ typedef long long Long;
 typedef long double Double;
 typedef unsigned long long ULong;
 typedef pair<Long, Long> Pair;
+typedef tuple<Long, Long, Long> Trio;
 const int N = 1e6;
 const Long INF = 1e18;
 const Double EPS = 1e-9;
