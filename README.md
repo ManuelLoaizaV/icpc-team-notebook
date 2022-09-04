@@ -1,17 +1,17 @@
-# ACM ICPC WeakTrichotomy notebook
+# ACM ICPC NoCsNoFun notebook
 
-This repository hosts UPC's ICPC team reference document.
+This repository hosts PUCP's ICPC team reference document.
 It consists of copy-pasteable C++ code for ICPC-style programming competitions.
 
 ## Team
 
-* WeakTrichotomy
+* NoCsNoFun
 
 ## Members
 
-* Jemisson Daniel Coronel Baldeón
-* Manuel Alejandro Loaiza Vasquez
-* Oscar Burga
+* Guillermo Enrique Junchaya Heredia (Byakko)
+* Jemisson Daniel Coronel Baldeón (cohr314)
+* Manuel Alejandro Loaiza Vasquez (ManuelLoaiza)
 
 # Setup (optional)
 
