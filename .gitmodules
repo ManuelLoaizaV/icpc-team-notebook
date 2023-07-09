@@ -1,0 +1,6 @@
+[submodule "gtest"]
+	path = gtest
+	url = git@github.com:google/googletest.git
+[submodule "gtestclear"]
+	path = gtestclear
+	url = git@github.com:google/googletest.git

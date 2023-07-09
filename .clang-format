@@ -1,0 +1,32 @@
+---
+Language: Cpp
+BasedOnStyle: Google
+
+# Indentation
+UseTab: Always
+IndentWidth: 2
+
+# Line Wrapping
+ColumnLimit: 80
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: false
+
+# Spaces
+SpacesInParentheses: false
+SpacesInAngles: false
+SpacesInSquareBrackets: false
+SpaceBeforeAssignmentOperators: true
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterControlStatementKeyword: true
+SpaceBeforeCpp11BracedList: true
+SpaceBeforeInheritanceColon: false
+SpaceBeforeParens: ControlStatements
+SpacesInConditionalStatement: false
+
+# Other
+IndentCaseLabels: false
+AlignTrailingComments: true
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
