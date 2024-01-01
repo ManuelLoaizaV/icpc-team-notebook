@@ -1,6 +1,5 @@
-const int N = 1e5 + 1;  // total de caracteres + 1
-const int ALPHABET = 26;
-const int C = (int)'a';
+const int N = 1e5 + 1;  // #chars + 1
+const char A = 'a';
 struct Trie {
   map<int, int> trie[N];
   int cnt[N];
@@ -18,7 +17,7 @@ struct Trie {
     int n = s.size();
     int u = 0;
     for (int i = 0; i < n; i++) {
-      int c = s[i] - C;
+      int c = (int)(s[i] - A);
       if (trie[u].count(c) == 0) trie[u][c] = nodes++;
       u = trie[u][c];
       cnt[u]++;
@@ -29,7 +28,7 @@ struct Trie {
     int n = s.size();
     int u = 0;
     for (int i = 0; i < n; i++) {
-      int c = s[i] - C;
+      int c = (int)(s[i] - A);
       int next_u = trie[u][c];
       cnt[next_u]--;
       if (cnt[next_u] == 0) trie[u].erase(c);

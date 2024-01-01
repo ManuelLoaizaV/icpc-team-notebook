@@ -1,12 +1,13 @@
+typedef pair<Long, int> Pair;
 const Long INF = 1e18;
 const int N = 1e5;
 vector<Pair> adj[N];
 Long d[N];
 void Dijkstra(int s) {
   for (int i = 0; i < N; i++) d[i] = INF;
-  d[s] = 0;
+  d[s] = 0LL;
   priority_queue<Pair, vector<Pair>, greater<Pair>> q;
-  q.push({0, s});
+  q.push({0LL, s});
   while (!q.empty()) {
     Pair path = q.top();
     int u = path.second;

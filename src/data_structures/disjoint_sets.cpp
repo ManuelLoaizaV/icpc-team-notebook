@@ -24,4 +24,4 @@ struct DisjointSets {
   }
   bool SameSet(int u, int v) { return Find(u) == Find(v); }
   int GetSize(int u) { return size[Find(u)]; }
-} dsu;
+};
