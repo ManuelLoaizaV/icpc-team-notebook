@@ -16,7 +16,7 @@ struct Matrix {
   const vector<T>& operator[](size_t i) const { return matrix[i]; }
 
   // Returns matrix multiplication Q_{r x p} = M_{r x c} * N_{c x p}.
-  // Time complexity: O(r*c*p)
+  // Time complexity: O(r*c*p).
   Matrix operator*(const Matrix& other) const {
     assert(columns == other.rows);
     Matrix result(rows, other.columns);
@@ -26,9 +26,10 @@ struct Matrix {
           result[i][j] += matrix[i][k] * other[k][j];
     return result;
   }
+
   // Returns matrix-vector multiplication v'=M*v.
   // Useful for applying transition matrix to recurrence states.
-  // Time complexity: O(r*c)
+  // Time complexity: O(r*c).
   vector<T> operator*(const vector<T>& v) const {
     assert(columns == v.size());
     vector<T> result(rows, T(0));
@@ -37,15 +38,14 @@ struct Matrix {
         result[i] += matrix[i][j] * v[j];
     return result;
   }
-};
 
-// Computes M^n via binary exponentiation.
-// Time complexity: O(r^3 lg n)
-template <typename T>
-Matrix<T> pow(Matrix<T> M, long long n) {
-  assert(M.rows == M.columns);
-  Matrix<T> result(M.rows, M.rows, true);
-  for (; n > 0; n >>= 1, M = M * M)
-    if (n & 1) result = result * M;
-  return result;
-}
+  // Computes M^n via binary exponentiation.
+  // Time complexity: O(r^3 lg n).
+  friend Matrix<T> pow(Matrix<T> M, long long n) {
+    assert(M.rows == M.columns);
+    Matrix<T> result(M.rows, M.rows, true);
+    for (; n > 0; n >>= 1, M = M * M)
+      if (n & 1) result = result * M;
+    return result;
+  }
+};
