@@ -1,54 +1,51 @@
-typedef long long Long;
-typedef vector<vector<Long>> Matrix;
-const Long MOD = 1e9 + 7;
-Long Add(Long a, Long b) {
-  return (a + b) % MOD;
-}
-Long Sub(Long a, Long b) {
-  return (a - b + MOD) % MOD;
-}
-Long Mul(Long a, Long b) {
-  if (a * b < 0) return Sub(0, abs(a * b) % MOD);
-  return (a * b) % MOD;
-}
-Matrix GetMatrix(int n, int m, bool is_identity) {
-  Matrix matrix = Matrix(n, vector<Long> (m, 0));
-  if (is_identity) {
-    assert(n == m);
-    for (int i = 0; i < n; i++) matrix[i][i] = 1LL;
+template <typename T>
+struct Matrix {
+  size_t rows, columns;
+  vector<vector<T>> matrix;
+
+  // Initializes a new zero matrix M_{r x c}
+  // or square identity matrix I_r if identity=true.
+  Matrix(size_t r, size_t c, bool identity = false)
+    : rows(r), columns(c), matrix(r, vector<T>(c, T(0))) {
+    if (identity) {
+      assert(r == c);
+      for (int i = 0; i < r; i++) matrix[i][i] = T(1);
+    }
   }
-  return matrix;
-}
-Matrix operator + (const Matrix& a, const Matrix& b) {
-  Long n = a.size();
-  Long m = a[0].size();
-  assert(a.size() == b.size());
-  assert(a[0].size() == b[0].size());
-  Matrix c = GetMatrix(n, m, false);
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < m; j++)
-      c[i][j] = Add(a[i][j], b[i][j]);
-  return c;
-}
-Matrix operator * (const Matrix& a, const Matrix& b) {
-  assert(a[0].size() == b.size());
-  int n = a.size();
-  int m = a[0].size();
-  int p = b[0].size();
-  Matrix c = GetMatrix(n, p, false);
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < p; j++)
-      for (int k = 0; k < m; k++)
-        c[i][j] = Add(c[i][j], Mul(a[i][k], b[k][j]));
-  return c;
-}
-Matrix FastPow(const Matrix& a, Long b) {
-  assert(a.size() == a[0].size());
-  Matrix ans = GetMatrix(a.size(), a.size(), true);
-  while (b > 0) {
-    if (b & 1) ans = ans * a;
-    a = a * a;
-    b >>= 1;
+  vector<T>& operator[](size_t i) { return matrix[i]; }
+  const vector<T>& operator[](size_t i) const { return matrix[i]; }
+
+  // Returns matrix multiplication Q_{r x p} = M_{r x c} * N_{c x p}.
+  // Time complexity: O(r*c*p)
+  Matrix operator*(const Matrix& other) const {
+    assert(columns == other.rows);
+    Matrix result(rows, other.columns);
+    for (int i = 0; i < rows; i++)
+      for (int k = 0; k < columns; k++)
+        for (int j = 0; j < other.columns; j++)
+          result[i][j] += matrix[i][k] * other[k][j];
+    return result;
   }
-  return ans;
+  // Returns matrix-vector multiplication v'=M*v.
+  // Useful for applying transition matrix to recurrence states.
+  // Time complexity: O(r*c)
+  vector<T> operator*(const vector<T>& v) const {
+    assert(columns == v.size());
+    vector<T> result(rows, T(0));
+    for (int i = 0; i < rows; i++)
+      for (int j = 0; j < columns; j++)
+        result[i] += matrix[i][j] * v[j];
+    return result;
+  }
+};
+
+// Computes M^n via binary exponentiation.
+// Time complexity: O(r^3 lg n)
+template <typename T>
+Matrix<T> pow(Matrix<T> M, long long n) {
+  assert(M.rows == M.columns);
+  Matrix<T> result(M.rows, M.rows, true);
+  for (; n > 0; n >>= 1, M = M * M)
+    if (n & 1) result = result * M;
+  return result;
 }
